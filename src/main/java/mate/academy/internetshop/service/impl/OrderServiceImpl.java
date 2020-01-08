@@ -1,5 +1,6 @@
 package mate.academy.internetshop.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List getUserOrders(User user) {
-        return user.getOrders();
+        List<Order> userOrders = new ArrayList<>();
+        for (Order order : orderDao.getAll()) {
+            if (order.getUserId().equals(user.getId())) {
+                userOrders.add(order);
+            }
+        }
+        return userOrders;
     }
 
     @Override
