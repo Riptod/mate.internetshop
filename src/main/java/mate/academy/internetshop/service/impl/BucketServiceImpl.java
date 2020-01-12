@@ -27,6 +27,12 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
+    public Optional<Bucket> getByUser(Long userId) {
+        Optional<Bucket> bucket = bucketDao.getByUser(userId);
+        return bucket;
+    }
+
+    @Override
     public void deleteItem(Bucket bucket, Item item) {
         Bucket newBucket = bucketDao.get(bucket.getId()).get();
         List<Item> itemOfBucket = newBucket.getItems();

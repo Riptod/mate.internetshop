@@ -60,4 +60,14 @@ public class BucketDaoImpl implements BucketDao {
     public List<Bucket> getAll() {
         return Storage.buckets;
     }
+
+    @Override
+    public Optional<Bucket> getByUser(Long userId) {
+        return Optional.ofNullable(Storage.buckets
+                .stream()
+                .filter(b -> b.getUserId().equals(userId))
+                .findFirst()
+                .orElseThrow(()
+                        -> new NoSuchElementException("Can't find bucket with id: " + userId)));
+    }
 }
