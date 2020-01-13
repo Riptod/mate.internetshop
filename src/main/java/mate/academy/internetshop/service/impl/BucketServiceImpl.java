@@ -1,7 +1,6 @@
 package mate.academy.internetshop.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.lib.Inject;
@@ -27,9 +26,8 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public Optional<Bucket> getByUser(Long userId) {
-        Optional<Bucket> bucket = bucketDao.getByUser(userId);
-        return bucket;
+    public Bucket getByUser(Long userId) {
+        return bucketDao.getByUser(userId).get();
     }
 
     @Override
@@ -58,9 +56,8 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public Optional<Bucket> get(Long id) {
-        Optional<Bucket> bucket = bucketDao.get(id);
-        return bucket;
+    public Bucket get(Long id) {
+        return bucketDao.get(id).get();
     }
 
     @Override

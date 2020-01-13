@@ -20,14 +20,14 @@ public class CompliteOrderController extends HttpServlet {
     private static BucketService bucketService;
     @Inject
     private static UserService userService;
+    private static final Long USER_ID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         List<Item> allItems = new ArrayList<>(bucketService.getAllItems(bucketService
-                .getByUser(1L).get()));
-        orderService.completeOrder(allItems, userService.get(1L).get());
-        bucketService.clear(bucketService.getByUser(1L).get().getId());
+                .getByUser(USER_ID)));
+        orderService.completeOrder(allItems, userService.get(USER_ID));
         resp.sendRedirect(req.getContextPath() + "/getAllOrders");
     }
 }
