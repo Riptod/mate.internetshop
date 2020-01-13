@@ -19,10 +19,9 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Optional<Order> get(Long id) {
-        return Optional.ofNullable(Storage.orders.stream()
+        return Storage.orders.stream()
                 .filter(b -> b.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Can't find number with id " + id)));
+                .findFirst();
     }
 
     @Override

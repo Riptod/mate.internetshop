@@ -1,7 +1,8 @@
 package mate.academy.internetshop.service.impl;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
+
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.lib.Inject;
@@ -21,14 +22,20 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public void addItem(Bucket bucket, Item item) {
-        Bucket newBucket = bucketDao.get(bucket.getId()).get();
+        Bucket newBucket = get(bucket.getId());
         newBucket.getItems().add(item);
         bucketDao.update(newBucket);
     }
 
     @Override
+    public Bucket getByUser(Long userId) {
+        return bucketDao.getByUser(userId)
+                .orElseThrow(() -> new NoSuchElementException("Found no bucket with id " + userId));
+    }
+
+    @Override
     public void deleteItem(Bucket bucket, Item item) {
-        Bucket newBucket = bucketDao.get(bucket.getId()).get();
+        Bucket newBucket = get(bucket.getId());
         List<Item> itemOfBucket = newBucket.getItems();
         itemOfBucket.remove(item);
         bucketDao.update(newBucket);
@@ -36,14 +43,14 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     public Bucket clear(Long bucketId) {
-        Bucket bucket = bucketDao.get(bucketId).get();
+        Bucket bucket = get(bucketId);
         bucket.getItems().clear();
         return bucket;
     }
 
     @Override
     public List<Item> getAllItems(Bucket bucket) {
-        return bucketDao.get(bucket.getId()).get().getItems();
+        return get(bucket.getId()).getItems();
     }
 
     @Override
@@ -52,9 +59,9 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public Optional<Bucket> get(Long id) {
-        Optional<Bucket> bucket = bucketDao.get(id);
-        return bucket;
+    public Bucket get(Long id) {
+        return bucketDao.get(id)
+                .orElseThrow(() -> new NoSuchElementException("Found no bucket with id " + id));
     }
 
     @Override

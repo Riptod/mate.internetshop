@@ -13,6 +13,10 @@ public class Item {
         this.price = price;
     }
 
+    public Item() {
+        this.id = IdGenerator.getItemId();
+    }
+
     public Long getId() {
         return id;
     }

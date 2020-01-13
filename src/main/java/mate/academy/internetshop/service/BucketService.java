@@ -1,6 +1,7 @@
 package mate.academy.internetshop.service;
 
 import java.util.List;
+
 import mate.academy.internetshop.models.Bucket;
 import mate.academy.internetshop.models.Item;
 
@@ -12,4 +13,6 @@ public interface BucketService extends GenericService<Bucket, Long> {
     Bucket clear(Long bucketId);
 
     List getAllItems(Bucket bucket);
+
+    Bucket getByUser(Long userId);
 }
