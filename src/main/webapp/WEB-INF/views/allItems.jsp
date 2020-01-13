@@ -9,7 +9,6 @@
 <body>
 Items:
 <table border="1">
-    <!-- here should go some titles... -->
     <tr>
         <th>Name</th>
         <th>Price</th>

@@ -19,10 +19,9 @@ public class ItemDaoImpl implements ItemDao {
 
     @Override
     public Optional<Item> get(Long id) {
-        return Optional.ofNullable(Storage.items.stream()
+        return Storage.items.stream()
                 .filter(item -> item.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Can't find number with id " + id)));
+                .findFirst();
     }
 
     @Override
