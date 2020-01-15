@@ -24,13 +24,13 @@ Items:
                 <c:out value="${item.price}" />
             </td>
             <td>
-                <a href="/mate_internetshop_war_exploded/deleteItemFromBucket?item_id=${item.id}">DELETE</a>
+                <a href="/mate_internetshop_war_exploded/servlet/deleteItemFromBucket?item_id=${item.id}">DELETE</a>
             </td>
         </tr>
     </c:forEach>
 </table>
-<a href="/mate_internetshop_war_exploded/getAllItems">AllItems</a>
-<a href="/mate_internetshop_war_exploded/compliteOrder">CompliteOrder</a>
-<a href="/mate_internetshop_war_exploded/home">Back to home</a>
+<a href="/mate_internetshop_war_exploded/servlet/getAllItems">AllItems</a>
+<a href="/mate_internetshop_war_exploded/servlet/compliteOrder">CompliteOrder</a>
+<a href="/mate_internetshop_war_exploded/servlet/home">Back to home</a>
 </body>
 </html>

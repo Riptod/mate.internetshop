@@ -13,7 +13,7 @@
 <body>
 Create new item!
 
-<form action="/mate_internetshop_war_exploded/createItem" method="post">
+<form action="/mate_internetshop_war_exploded/servlet/createItem" method="post">
     <div class="container">
         <h1>CreateItem</h1>
         <hr>
@@ -26,7 +26,7 @@ Create new item!
         <button type="submit" class="registerbtn">Create</button>
     </div>
 </form>
-<a href="/mate_internetshop_war_exploded/getAllItems">AllItems</a>
-<a href="/mate_internetshop_war_exploded/home">Back to home</a>
+<a href="/mate_internetshop_war_exploded/servlet/getAllItems">AllItems</a>
+<a href="/mate_internetshop_war_exploded/servlet/home">Back to home</a>
 </body>
 </html>

@@ -27,6 +27,6 @@ public class CreateItemController extends HttpServlet {
         newItem.setName(req.getParameter("name"));
         newItem.setPrice(Double.valueOf(req.getParameter("price")));
         itemService.create(newItem);
-        resp.sendRedirect(req.getContextPath() + "/createItem");
+        resp.sendRedirect(req.getContextPath() + "/servlet/createItem");
     }
 }
