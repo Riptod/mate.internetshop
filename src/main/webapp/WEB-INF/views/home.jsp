@@ -13,12 +13,12 @@
 <body>
     Select option:
     <br>
-    <a href="/mate_internetshop_war_exploded/getAllItems">AllItems</a>
+    <a href="/mate_internetshop_war_exploded/servlet/getAllItems">AllItems</a>
     <br>
-    <a href="/mate_internetshop_war_exploded/getAllOrders">AllOrders</a>
+    <a href="/mate_internetshop_war_exploded/servlet/getAllOrders">AllOrders</a>
     <br>
-    <a href="/mate_internetshop_war_exploded/createItem">Create new item</a>
+    <a href="/mate_internetshop_war_exploded/servlet/createItem">Create new item</a>
     <br>
-    <a href="/mate_internetshop_war_exploded/bucket">My bucket</a>
+    <a href="/mate_internetshop_war_exploded/servlet/bucket">My bucket</a>
 </body>
 </html>

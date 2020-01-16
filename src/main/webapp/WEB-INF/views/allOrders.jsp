@@ -24,12 +24,12 @@ Orders :
                 <c:out value="${order.items}" />
             </td>
             <td>
-                <a href="/mate_internetshop_war_exploded/deleteOrder?order_id=${order.id}">DELETE</a>
+                <a href="/mate_internetshop_war_exploded/servlet/deleteOrder?order_id=${order.id}">DELETE</a>
             </td>
         </tr>
     </c:forEach>
 </table>
-<a href="/mate_internetshop_war_exploded/bucket">Bucket</a>
-<a href="/mate_internetshop_war_exploded/home">Back to home</a>
+<a href="/mate_internetshop_war_exploded/servlet/bucket">Bucket</a>
+<a href="/mate_internetshop_war_exploded/servlet/home">Back to home</a>
 </body>
 </html>

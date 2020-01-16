@@ -8,6 +8,15 @@ public class User {
     private String surname;
     private String login;
     private String password;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public User() {
         this.id = IdGenerator.getUserId();

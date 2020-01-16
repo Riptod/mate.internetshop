@@ -11,13 +11,13 @@ import mate.academy.internetshop.service.BucketService;
 public class GetBucketController extends HttpServlet {
     @Inject
     private static BucketService bucketService;
-    private static final Long USER_ID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        Long userId = (Long) req.getSession().getAttribute("userId");
         req.setAttribute("items", bucketService
-                .getAllItems(bucketService.getByUser(USER_ID)));
+                .getAllItems(bucketService.getByUser(userId)));
         req.getRequestDispatcher("/WEB-INF/views/bucket.jsp").forward(req, resp);
     }
 }

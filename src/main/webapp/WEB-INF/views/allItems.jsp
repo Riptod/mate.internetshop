@@ -23,12 +23,12 @@ Items:
                 <c:out value="${item.price}" />
             </td>
             <td>
-                <a href="/mate_internetshop_war_exploded/addItemToBucket?item_id=${item.id}">ADD</a>
+                <a href="/mate_internetshop_war_exploded/servlet/addItemToBucket?item_id=${item.id}">ADD</a>
             </td>
         </tr>
     </c:forEach>
 </table>
-<a href="/mate_internetshop_war_exploded/bucket">Bucket</a>
-<a href="/mate_internetshop_war_exploded/home">Back to home</a>
+<a href="/mate_internetshop_war_exploded/servlet/bucket">Bucket</a>
+<a href="/mate_internetshop_war_exploded/servlet/home">Back to home</a>
 </body>
 </html>
