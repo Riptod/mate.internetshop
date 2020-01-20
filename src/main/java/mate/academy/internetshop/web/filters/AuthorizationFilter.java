@@ -23,22 +23,19 @@ public class AuthorizationFilter implements Filter {
     public static final String EMPTY_STRING = "";
     @Inject
     private static UserService userService;
-    private Map<String, Role.RoleName> protectedUrlsAdmin = new HashMap<>();
-    private Map<String, Role.RoleName> protectedUrlsUser = new HashMap<>();
-
     private Map<String, Role.RoleName> protectedUrls = new HashMap<>();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        protectedUrlsAdmin.put("/servlet/getAllUsers", ADMIN);
-        protectedUrlsAdmin.put("/servlet/deleteUser", ADMIN);
-        protectedUrlsAdmin.put("/servlet/createItem", ADMIN);
-        protectedUrlsAdmin.put("/servlet/deleteOrder", ADMIN);
-        protectedUrlsUser.put("/servlet/addItemToBucket", USER);
-        protectedUrlsUser.put("/servlet/bucket", USER);
-        protectedUrlsUser.put("/servlet/deleteItemFromBucket", USER);
-        protectedUrlsUser.put("/servlet/compliteOrder", USER);
-        protectedUrlsUser.put("/servlet/getAllOrders", USER);
+        protectedUrls.put("/servlet/getAllUsers", ADMIN);
+        protectedUrls.put("/servlet/deleteUser", ADMIN);
+        protectedUrls.put("/servlet/createItem", ADMIN);
+        protectedUrls.put("/servlet/deleteOrder", ADMIN);
+        protectedUrls.put("/servlet/addItemToBucket", USER);
+        protectedUrls.put("/servlet/bucket", USER);
+        protectedUrls.put("/servlet/deleteItemFromBucket", USER);
+        protectedUrls.put("/servlet/compliteOrder", USER);
+        protectedUrls.put("/servlet/getAllOrders", USER);
     }
 
     @Override
@@ -47,14 +44,13 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         String requestedUrl = req.getRequestURI().replace(req.getContextPath(), EMPTY_STRING);
-        Role.RoleName roleNameAdmin = protectedUrlsAdmin.get(requestedUrl);
-        Role.RoleName roleNameUser = protectedUrlsUser.get(requestedUrl);
-        if (roleNameUser == null && roleNameAdmin == null) {
+        Role.RoleName roleName = protectedUrls.get(requestedUrl);
+        if (roleName == null) {
             processAuthentication(chain, req, resp);
         }
         Long userId = (Long) req.getSession().getAttribute("userId");
         User user = userService.get(userId);
-        if (verifyRole(user, roleNameAdmin) || verifyRole(user, roleNameUser)) {
+        if (verifyRole(user, roleName)) {
             processAuthentication(chain, req, resp);
         } else {
             processDenied(req, resp);
