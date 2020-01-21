@@ -51,12 +51,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User deleteByObj(User object) {
-        Storage.users.removeIf(b -> b.equals(object));
-        return object;
-    }
-
-    @Override
     public List<User> getAll() {
         return Storage.users;
     }

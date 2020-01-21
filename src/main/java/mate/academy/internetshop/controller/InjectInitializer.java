@@ -5,6 +5,7 @@ import javax.servlet.ServletContextListener;
 import mate.academy.internetshop.lib.Injector;
 import org.apache.log4j.Logger;
 
+
 public class InjectInitializer implements ServletContextListener {
     private static final Logger LOGGER = Logger.getLogger(InjectInitializer.class);
 

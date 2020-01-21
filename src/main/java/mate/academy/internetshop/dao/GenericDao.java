@@ -12,7 +12,5 @@ public interface GenericDao<T, I> {
 
     boolean delete(I id);
 
-    T deleteByObj(T object);
-
     List<T> getAll();
 }

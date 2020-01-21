@@ -49,12 +49,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order deleteByObj(Order object) {
-        Storage.orders.removeIf(b -> b.equals(object));
-        return object;
-    }
-
-    @Override
     public List<Order> getAll() {
         return Storage.orders;
     }
