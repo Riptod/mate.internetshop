@@ -19,13 +19,10 @@ public class LoginController extends HttpServlet {
     @Inject
     private static ItemService itemService;
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
-        itemService.get(1L);
-        itemService.delete(2L);
     }
 
     @Override

@@ -1,5 +1,8 @@
 package mate.academy.internetshop.factory;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.OrderDao;
@@ -18,21 +21,16 @@ import mate.academy.internetshop.service.impl.OrderServiceImpl;
 import mate.academy.internetshop.service.impl.UserServiceImpl;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-
 public class Factory {
-    private static Logger logger= Logger.getLogger(Factory.class);
+    private static Logger logger = Logger.getLogger(Factory.class);
     private static Connection connection;
 
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection =
-                    DriverManager.getConnection("jdbc:mysql://localhost/internetshop?" +
-                    "user=root&password=1234&serverTimezone=UTC");
+                    DriverManager.getConnection("jdbc:mysql://localhost/internetshop?"
+                            + "user=root&password=1234&serverTimezone=UTC");
         } catch (ClassNotFoundException | SQLException e) {
             logger.error("Can`t establish connection to our DB", e);
         }
