@@ -49,12 +49,6 @@ public class BucketDaoImpl implements BucketDao {
     }
 
     @Override
-    public Bucket deleteByObj(Bucket object) {
-        Storage.buckets.removeIf(b -> b.equals(object));
-        return object;
-    }
-
-    @Override
     public List<Bucket> getAll() {
         return Storage.buckets;
     }

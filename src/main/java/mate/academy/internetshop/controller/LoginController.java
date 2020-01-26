@@ -10,11 +10,14 @@ import javax.servlet.http.HttpSession;
 import mate.academy.internetshop.exceptions.AuthentificationException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.models.User;
+import mate.academy.internetshop.service.ItemService;
 import mate.academy.internetshop.service.UserService;
 
 public class LoginController extends HttpServlet {
     @Inject
     private static UserService userService;
+    @Inject
+    private static ItemService itemService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
