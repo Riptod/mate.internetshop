@@ -13,4 +13,6 @@ public interface OrderService extends GenericService<Order, Long> {
     List getUserOrders(User user) throws DataProcessingException;
 
     List<Order> getAll() throws DataProcessingException;
+
+    List<Order> getOrders(Long userId) throws DataProcessingException;
 }

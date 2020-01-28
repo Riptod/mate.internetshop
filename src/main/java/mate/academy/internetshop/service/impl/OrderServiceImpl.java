@@ -71,5 +71,10 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getAll();
     }
 
+    @Override
+    public List<Order> getOrders(Long userId) throws DataProcessingException {
+        return orderDao.getOrders(userId);
+    }
+
 
 }

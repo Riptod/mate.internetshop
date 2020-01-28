@@ -13,7 +13,5 @@ public interface UserDao extends GenericDao<User, Long> {
 
     public List<User> getAll() throws DataProcessingException;
 
-    public Optional<User> login(String login, String password) throws DataProcessingException;
-
-    public List<Order> getOrders(Long userId) throws DataProcessingException;
+    public Optional<User> login(String login) throws DataProcessingException;
 }

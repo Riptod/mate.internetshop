@@ -21,11 +21,6 @@ public class UserServiceImpl implements UserService {
     private static UserDao userDao;
 
     @Override
-    public List<Order> getOrders(Long userId) throws DataProcessingException {
-        return userDao.getOrders(userId);
-    }
-
-    @Override
     public User create(User user) throws DataProcessingException {
         user.setToken(getToken());
         return userDao.create(user);
@@ -59,7 +54,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String login, String password) throws AuthentificationException,
             DataProcessingException {
-        Optional<User> user = userDao.login(login, password);
+        Optional<User> user = userDao.login(login);
         if (user.isEmpty() || !user.get().getPassword().equals(password)) {
             throw new AuthentificationException("Login, or password incorrect");
         }

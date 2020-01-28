@@ -15,5 +15,4 @@ public interface UserService  extends GenericService<User, Long> {
 
     public List<User> getAll() throws DataProcessingException;
 
-    public List<Order> getOrders(Long userId) throws DataProcessingException;
 }

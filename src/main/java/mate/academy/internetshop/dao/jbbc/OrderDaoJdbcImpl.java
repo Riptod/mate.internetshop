@@ -136,4 +136,23 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
         }
         return get(orderId).get();
     }
+
+    @Override
+    public List<Order> getOrders(Long userId) throws DataProcessingException {
+        String query = "SELECT order_id FROM orders WHERE user_id = ?;";
+        List<Order> orders = new ArrayList<>();
+        try (PreparedStatement preparedStatement
+                     = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                long orderId = resultSet.getLong("order_id");
+                Optional<Order> order = get(orderId);
+                orders.add(order.get());
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Failed to get user orders: ", e);
+        }
+        return orders;
+    }
 }

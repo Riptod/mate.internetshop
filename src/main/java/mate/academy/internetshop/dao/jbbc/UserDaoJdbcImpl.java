@@ -181,14 +181,13 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public Optional<User> login(String login, String password) throws DataProcessingException {
-        String query = "SELECT * FROM users WHERE login = ? AND password = ?;";
+    public Optional<User> login(String login) throws DataProcessingException {
+        String query = "SELECT * FROM users WHERE login = ?;";
         Optional<User> user;
         Long userId = null;
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query)) {
             preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 userId = resultSet.getLong("user_id");
@@ -198,24 +197,5 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             throw new DataProcessingException("Failed to login user: ", e);
         }
         return user;
-    }
-
-    @Override
-    public List<Order> getOrders(Long userId) throws DataProcessingException {
-        String query = "SELECT order_id FROM orders WHERE user_id = ?;";
-        List<Order> orders = new ArrayList<>();
-        try (PreparedStatement preparedStatement
-                     = connection.prepareStatement(query)) {
-            preparedStatement.setLong(1, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                long orderId = resultSet.getLong("order_id");
-                Optional<Order> order = orderDao.get(orderId);
-                orders.add(order.get());
-            }
-        } catch (SQLException e) {
-            throw new DataProcessingException("Failed to get user orders: ", e);
-        }
-        return orders;
     }
 }

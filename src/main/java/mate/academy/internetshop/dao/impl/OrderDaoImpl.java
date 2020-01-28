@@ -59,4 +59,9 @@ public class OrderDaoImpl implements OrderDao {
         return null;
     }
 
+    @Override
+    public List<Order> getOrders(Long userId) throws DataProcessingException {
+        return null;
+    }
+
 }
