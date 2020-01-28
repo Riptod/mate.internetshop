@@ -31,13 +31,13 @@ public class CompliteOrderController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Long userId = (Long) req.getSession().getAttribute("userId");
-        List<Item> allItems = null;
+        List<Item> allItems = new ArrayList<>();
         try {
-            allItems = new ArrayList<>(bucketService.getAllItems(bucketService
-                    .getByUser(userId)));
+            allItems.addAll((bucketService.getAllItems(bucketService.getByUser(userId))));
             orderService.completeOrder(allItems, userService.get(userId));
         } catch (DataProcessingException e) {
             LOGGER.error("Can't complite order", e);
+            req.setAttribute("errorMsg", "Can't complite order");
             req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
         }
         resp.sendRedirect(req.getContextPath() + "/servlet/getAllOrders");

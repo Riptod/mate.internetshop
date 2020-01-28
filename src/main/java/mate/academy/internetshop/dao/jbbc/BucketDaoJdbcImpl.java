@@ -117,6 +117,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to delete bucket: ", e);
         }
+        clear(id);
         return true;
     }
 

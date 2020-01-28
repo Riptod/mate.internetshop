@@ -61,7 +61,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 String login = resultSet.getString("login");
                 String password = resultSet.getString("password");
                 String token = resultSet.getString("token");
-                User user = setUser(userId, name, surname, login, password, token);
+                User user = setUser(resultSet);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -70,8 +70,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         return users;
     }
 
-    @Override
-    public Optional<User> addRole(Long userId, Long roleId) throws DataProcessingException {
+    private Optional<User> addRole(Long userId, Long roleId) throws DataProcessingException {
         String query = "INSERT INTO `users_roles` (`user_id`, `role_id`) VALUES (?, ?);";
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query)) {
@@ -129,7 +128,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 Long roleId = resultSet.getLong("role_id");
                 RoleDao roleDao = new RoleDaoJdbcImpl(connection);
                 Optional<Role> role = roleDao.get(roleId);
-                user = setUser(userId, name, surname, login, password, token);
+                user = setUser(resultSet);
                 user.addRole(role.get());
                 return Optional.of(user);
             }
@@ -159,30 +158,6 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public boolean delete(Long id) throws DataProcessingException {
-        String queryGetOrder = "SELECT * FROM orders WHERE user_id = ?;";
-        List<Long> ordersId = new ArrayList<>();
-        try (PreparedStatement preparedStatement
-                     = connection.prepareStatement(queryGetOrder)) {
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                long orderId = resultSet.getLong("order_id");
-                ordersId.add(orderId);
-            }
-        } catch (SQLException e) {
-            throw new DataProcessingException("Failed to delete user: ", e);
-        }
-        for (Long orderId : ordersId) {
-            orderDao.delete(orderId);
-        }
-        String queryRoles = "DELETE FROM users_roles WHERE user_id = ?;";
-        try (PreparedStatement preparedStatement
-                     = connection.prepareStatement(queryRoles)) {
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DataProcessingException("Failed to delete user: ", e);
-        }
         String query = "DELETE FROM users WHERE user_id = ?;";
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query)) {
@@ -194,16 +169,14 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         return true;
     }
 
-    @Override
-    public User setUser(Long id, String name, String surname, String login,
-                        String password, String token) {
+    private User setUser(ResultSet resultSet) throws SQLException {
         User user = new User();
-        user.setId(id);
-        user.setName(name);
-        user.setSurname(surname);
-        user.setLogin(login);
-        user.setPassword(password);
-        user.setToken(token);
+        user.setId(resultSet.getLong("user_id"));
+        user.setName(resultSet.getString("name"));
+        user.setSurname(resultSet.getString("surname"));
+        user.setLogin(resultSet.getString("login"));
+        user.setPassword(resultSet.getString("password"));
+        user.setToken(resultSet.getString("token"));
         return user;
     }
 
@@ -220,10 +193,10 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             while (resultSet.next()) {
                 userId = resultSet.getLong("user_id");
             }
+            user = get(userId);
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to login user: ", e);
         }
-        user = get(userId);
         return user;
     }
 

@@ -27,6 +27,7 @@ public class GetAllUsersController extends HttpServlet {
             req.setAttribute("users", userService.getAll());
         } catch (DataProcessingException e) {
             LOGGER.error("Can't get all users:", e);
+            req.setAttribute("errorMsg", "Can't get all users");
             req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
         }
         req.getRequestDispatcher("/WEB-INF/views/allUsers.jsp").forward(req, resp);

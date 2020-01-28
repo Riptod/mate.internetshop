@@ -33,6 +33,7 @@ public class InjectDataController extends HttpServlet {
             userService.create(user);
         } catch (DataProcessingException e) {
             LOGGER.error("Can't create User:", e);
+            req.setAttribute("errorMsg", "Can't create User");
             req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
         }
 

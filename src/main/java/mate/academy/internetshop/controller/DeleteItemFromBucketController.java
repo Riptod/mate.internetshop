@@ -31,6 +31,7 @@ public class DeleteItemFromBucketController extends HttpServlet {
                     .get(Long.valueOf(itemId)));
         } catch (DataProcessingException e) {
             LOGGER.error("Can't delete item", e);
+            req.setAttribute("errorMsg", "Can't delete item");
             req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
         }
         resp.sendRedirect(req.getContextPath() + "/servlet/bucket");

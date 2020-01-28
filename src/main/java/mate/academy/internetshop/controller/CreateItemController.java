@@ -35,6 +35,7 @@ public class CreateItemController extends HttpServlet {
             itemService.create(newItem);
         } catch (DataProcessingException e) {
             LOGGER.error("Can't create item", e);
+            req.setAttribute("errorMsg", "Can't create item");
             req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
         }
         resp.sendRedirect(req.getContextPath() + "/servlet/createItem");

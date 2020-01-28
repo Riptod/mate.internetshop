@@ -26,6 +26,7 @@ public class DeleteOrderController extends HttpServlet {
             orderService.delete(Long.valueOf(orderId));
         } catch (DataProcessingException e) {
             LOGGER.error("Can't delete order", e);
+            req.setAttribute("errorMsg", "Can't delete order");
             req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
         }
         resp.sendRedirect(req.getContextPath() + "/servlet/getAllOrders");

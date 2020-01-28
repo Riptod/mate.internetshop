@@ -56,6 +56,7 @@ public class RegistrationController extends HttpServlet {
             resp.addCookie(cookie);
         } catch (DataProcessingException e) {
             LOGGER.error("Can't registrate user", e);
+            req.setAttribute("errorMsg", "Can't registrate");
             req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
         }
         resp.sendRedirect(req.getContextPath() + "/servlet/home");

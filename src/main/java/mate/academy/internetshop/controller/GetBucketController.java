@@ -26,6 +26,7 @@ public class GetBucketController extends HttpServlet {
             req.setAttribute("items", bucketService.getAllItems(bucketService.getByUser(userId)));
         } catch (DataProcessingException e) {
             LOGGER.error("Can't get all items from bucket:", e);
+            req.setAttribute("errorMsg", "Can't get all items from bucket");
             req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
         }
         req.getRequestDispatcher("/WEB-INF/views/bucket.jsp").forward(req, resp);

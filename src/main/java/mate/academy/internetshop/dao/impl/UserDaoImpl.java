@@ -57,17 +57,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> addRole(Long userId, Long roleId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public User setUser(Long id, String name, String surname, String login,
-                        String password, String token) {
-        return null;
-    }
-
-    @Override
     public Optional<User> login(String login, String password) {
         return Optional.empty();
     }
