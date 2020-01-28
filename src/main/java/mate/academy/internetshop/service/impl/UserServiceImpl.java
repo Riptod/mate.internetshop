@@ -7,8 +7,10 @@ import java.util.UUID;
 
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.AuthentificationException;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
+import mate.academy.internetshop.models.Order;
 import mate.academy.internetshop.models.User;
 import mate.academy.internetshop.service.UserService;
 
@@ -19,7 +21,12 @@ public class UserServiceImpl implements UserService {
     private static UserDao userDao;
 
     @Override
-    public User create(User user) {
+    public List<Order> getOrders(Long userId) throws DataProcessingException {
+        return userDao.getOrders(userId);
+    }
+
+    @Override
+    public User create(User user) throws DataProcessingException {
         user.setToken(getToken());
         return userDao.create(user);
     }
@@ -29,29 +36,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User get(Long id) {
+    public User get(Long id) throws DataProcessingException {
         return userDao.get(id)
                 .orElseThrow(() -> new NoSuchElementException("Found no user with id " + id));
     }
 
     @Override
-    public User update(User user) {
+    public User update(User user) throws DataProcessingException {
         return userDao.update(user);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(Long id) throws DataProcessingException {
         return userDao.delete(id);
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAll() throws DataProcessingException {
         return userDao.getAll();
     }
 
     @Override
-    public User login(String login, String password) throws  AuthentificationException {
-        Optional<User> user = userDao.findByLogin(login);
+    public User login(String login, String password) throws AuthentificationException,
+            DataProcessingException {
+        Optional<User> user = userDao.login(login, password);
         if (user.isEmpty() || !user.get().getPassword().equals(password)) {
             throw new AuthentificationException("Login, or password incorrect");
         }
@@ -59,7 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getByToken(String token) {
+    public Optional<User> getByToken(String token) throws DataProcessingException {
         return userDao.getByToken(token);
     }
 }

@@ -11,31 +11,35 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.models.Role;
 import mate.academy.internetshop.models.User;
 import mate.academy.internetshop.service.UserService;
-
-import static mate.academy.internetshop.models.Role.RoleName.ADMIN;
-import static mate.academy.internetshop.models.Role.RoleName.USER;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class AuthorizationFilter implements Filter {
+    private static final Logger LOGGER = LogManager.getLogger(AuthorizationFilter.class);
+
     public static final String EMPTY_STRING = "";
+
     @Inject
     private static UserService userService;
-    private Map<String, Role.RoleName> protectedUrls = new HashMap<>();
+
+    private Map<String, String> protectedUrls = new HashMap<>();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        protectedUrls.put("/servlet/getAllUsers", ADMIN);
-        protectedUrls.put("/servlet/deleteUser", ADMIN);
-        protectedUrls.put("/servlet/createItem", ADMIN);
-        protectedUrls.put("/servlet/deleteOrder", ADMIN);
-        protectedUrls.put("/servlet/addItemToBucket", USER);
-        protectedUrls.put("/servlet/bucket", USER);
-        protectedUrls.put("/servlet/deleteItemFromBucket", USER);
-        protectedUrls.put("/servlet/compliteOrder", USER);
-        protectedUrls.put("/servlet/getAllOrders", USER);
+        protectedUrls.put("/servlet/getAllUsers", "ADMIN");
+        protectedUrls.put("/servlet/deleteUser", "ADMIN");
+        protectedUrls.put("/servlet/createItem", "ADMIN");
+        protectedUrls.put("/servlet/deleteOrder", "ADMIN");
+        protectedUrls.put("/servlet/addItemToBucket", "USER");
+        protectedUrls.put("/servlet/bucket", "USER");
+        protectedUrls.put("/servlet/deleteItemFromBucket", "USER");
+        protectedUrls.put("/servlet/compliteOrder", "USER");
+        protectedUrls.put("/servlet/getAllOrders", "USER");
     }
 
     @Override
@@ -44,12 +48,19 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         String requestedUrl = req.getRequestURI().replace(req.getContextPath(), EMPTY_STRING);
-        Role.RoleName roleName = protectedUrls.get(requestedUrl);
+        String roleName = protectedUrls.get(requestedUrl);
         if (roleName == null) {
             processAuthentication(chain, req, resp);
+            return;
         }
         Long userId = (Long) req.getSession().getAttribute("userId");
-        User user = userService.get(userId);
+        User user = null;
+        try {
+            user = userService.get(userId);
+        } catch (DataProcessingException e) {
+            LOGGER.error("Can't get user:", e);
+            req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
+        }
         if (verifyRole(user, roleName)) {
             processAuthentication(chain, req, resp);
         } else {
@@ -62,7 +73,7 @@ public class AuthorizationFilter implements Filter {
         req.getRequestDispatcher("/WEB-INF/views/accessDenied.jsp").forward(req, resp);
     }
 
-    private boolean verifyRole(User user, Role.RoleName roleName) {
+    private boolean verifyRole(User user, String roleName) {
         return user.getRoles().stream().anyMatch(r -> r.getRoleName().equals(roleName));
     }
 

@@ -11,11 +11,17 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.models.User;
 import mate.academy.internetshop.service.UserService;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class AuthenticationFilter implements Filter {
+    private static final Logger LOGGER = LogManager.getLogger(AuthenticationFilter.class);
+
     @Inject
     private static UserService userService;
 
@@ -35,7 +41,13 @@ public class AuthenticationFilter implements Filter {
         }
         for (Cookie cookie : req.getCookies()) {
             if (cookie.getName().equals("MATE")) {
-                Optional<User> user = userService.getByToken(cookie.getValue());
+                Optional<User> user = null;
+                try {
+                    user = userService.getByToken(cookie.getValue());
+                } catch (DataProcessingException e) {
+                    LOGGER.error("Can't get user:", e);
+                    req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
+                }
                 if (user.isPresent()) {
                     filterChain.doFilter(servletRequest, servletResponse);
                     return;

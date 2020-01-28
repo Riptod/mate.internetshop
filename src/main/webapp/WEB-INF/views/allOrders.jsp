@@ -9,7 +9,6 @@
 <body>
 Orders :
 <table border="1">
-    <!-- here should go some titles... -->
     <tr>
         <th>OrderID</th>
         <th>Items</th>

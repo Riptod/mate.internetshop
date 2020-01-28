@@ -1,16 +1,14 @@
 package mate.academy.internetshop.service;
 
-import java.util.List;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 
 public interface GenericService<T, I> {
 
-    T create(T object);
+    T create(T object) throws DataProcessingException;
 
-    T get(I id);
+    T get(I id) throws DataProcessingException;
 
-    T update(T object);
+    T update(T object) throws DataProcessingException;
 
-    boolean delete(I id);
-
-    List<T> getAll();
+    boolean delete(I id) throws DataProcessingException;
 }

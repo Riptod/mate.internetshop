@@ -7,6 +7,7 @@ import java.util.Optional;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.database.Storage;
 import mate.academy.internetshop.lib.Dao;
+import mate.academy.internetshop.models.Order;
 import mate.academy.internetshop.models.User;
 
 @Dao
@@ -56,10 +57,24 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
-        return Storage.users.stream()
-                .filter(u -> u.getLogin().equals(login))
-                .findFirst();
+    public Optional<User> addRole(Long userId, Long roleId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public User setUser(Long id, String name, String surname, String login,
+                        String password, String token) {
+        return null;
+    }
+
+    @Override
+    public Optional<User> login(String login, String password) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Order> getOrders(Long userId) {
+        return null;
     }
 
     @Override
