@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.database.Storage;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
-import mate.academy.internetshop.models.Order;
 import mate.academy.internetshop.models.User;
 
 @Dao
@@ -57,13 +57,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> login(String login, String password) {
+    public Optional<User> login(String login) throws DataProcessingException {
         return Optional.empty();
-    }
-
-    @Override
-    public List<Order> getOrders(Long userId) {
-        return null;
     }
 
     @Override

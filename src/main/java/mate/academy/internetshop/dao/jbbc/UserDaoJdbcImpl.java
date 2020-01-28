@@ -8,13 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.lib.Inject;
-import mate.academy.internetshop.models.Order;
 import mate.academy.internetshop.models.Role;
 import mate.academy.internetshop.models.User;
 
@@ -30,21 +30,17 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> getByToken(String token) throws DataProcessingException {
-        String query = "SELECT * FROM users WHERE token = ?;";
-        Optional<User> user;
+        String query = "SELECT * FROM users INNER JOIN users_roles"
+                + " USING(user_id) WHERE token = ?;";
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query)) {
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                long userId = resultSet.getLong("user_id");
-                user = get(userId);
-                return user;
-            }
+            User user = setUser(resultSet);
+            return Optional.of(user);
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to get user: ", e);
         }
-        return Optional.empty();
     }
 
     @Override
@@ -96,13 +92,12 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             preparedStatement.setString(5, user.getToken());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-                while (generatedKeys.next()) {
-                    user.setId(generatedKeys.getLong(1));
-                }
+            while (generatedKeys.next()) {
+                user.setId(generatedKeys.getLong(1));
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to create user: ", e);
         }
-
         for (Role role : user.getRoles()) {
             addRole(user.getId(), role.getId());
         }
@@ -113,29 +108,15 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     public Optional<User> get(Long id) throws DataProcessingException {
         String query = "SELECT * FROM users INNER JOIN users_roles"
                 + " USING(user_id) WHERE user_id = ?;";
-        User user = new User();
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Long userId = resultSet.getLong("user_id");
-                String name = resultSet.getString("name");
-                String surname = resultSet.getString("surname");
-                String login = resultSet.getString("login");
-                String password = resultSet.getString("password");
-                String token = resultSet.getString("token");
-                Long roleId = resultSet.getLong("role_id");
-                RoleDao roleDao = new RoleDaoJdbcImpl(connection);
-                Optional<Role> role = roleDao.get(roleId);
-                user = setUser(resultSet);
-                user.addRole(role.get());
-                return Optional.of(user);
-            }
+            User user = setUser(resultSet);
+            return Optional.of(user);
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to get user: ", e);
         }
-        return Optional.empty();
     }
 
     @Override
@@ -169,33 +150,36 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         return true;
     }
 
-    private User setUser(ResultSet resultSet) throws SQLException {
+    private User setUser(ResultSet resultSet) throws SQLException,
+            DataProcessingException {
         User user = new User();
-        user.setId(resultSet.getLong("user_id"));
-        user.setName(resultSet.getString("name"));
-        user.setSurname(resultSet.getString("surname"));
-        user.setLogin(resultSet.getString("login"));
-        user.setPassword(resultSet.getString("password"));
-        user.setToken(resultSet.getString("token"));
+        while (resultSet.next()) {
+            user.setId(resultSet.getLong("user_id"));
+            user.setName(resultSet.getString("name"));
+            user.setSurname(resultSet.getString("surname"));
+            user.setLogin(resultSet.getString("login"));
+            user.setPassword(resultSet.getString("password"));
+            user.setToken(resultSet.getString("token"));
+            Long roleId = resultSet.getLong("role_id");
+            RoleDao roleDao = new RoleDaoJdbcImpl(connection);
+            Optional<Role> role = roleDao.get(roleId);
+            user.addRole(role.get());
+        }
         return user;
     }
 
     @Override
     public Optional<User> login(String login) throws DataProcessingException {
-        String query = "SELECT * FROM users WHERE login = ?;";
-        Optional<User> user;
-        Long userId = null;
+        String query = "SELECT * FROM users INNER JOIN users_roles"
+                + " USING(user_id) WHERE login = ?;";
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query)) {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                userId = resultSet.getLong("user_id");
-            }
-            user = get(userId);
+            User user = setUser(resultSet);
+            return Optional.of(user);
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to login user: ", e);
         }
-        return user;
     }
 }
