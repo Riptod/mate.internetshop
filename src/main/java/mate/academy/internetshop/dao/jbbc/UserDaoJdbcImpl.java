@@ -57,6 +57,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
                 String login = resultSet.getString("login");
                 String password = resultSet.getString("password");
                 String token = resultSet.getString("token");
+                byte[] salt = resultSet.getBytes("salt");
                 User user = setUser(resultSet);
                 users.add(user);
             }
@@ -81,8 +82,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User create(User user) throws DataProcessingException {
-        String query = "INSERT INTO `users` (`name`, `surname`, `login`, `password`, `token`)"
-                + " VALUES (?, ?, ?, ?, ?);";
+        String query = "INSERT INTO `users` (`name`, `surname`, `login`, `password`, `token`, `salt`)"
+                + " VALUES (?, ?, ?, ?, ?, ?);";
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getName());
@@ -90,6 +91,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             preparedStatement.setString(3, user.getLogin());
             preparedStatement.setString(4, user.getPassword());
             preparedStatement.setString(5, user.getToken());
+            preparedStatement.setBytes(6, user.getSalt());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             while (generatedKeys.next()) {
@@ -121,7 +123,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public User update(User user) throws DataProcessingException {
-        String query = "UPDATE users SET name = ?, surname = ?, login = ?, password = ?"
+        String query = "UPDATE users SET name = ?, surname = ?, login = ?, password = ?, salt = ?"
                 + " WHERE user_id = ?;";
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query)) {
@@ -129,7 +131,8 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setString(3, user.getLogin());
             preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setLong(5, user.getId());
+            preparedStatement.setBytes(5, user.getSalt());
+            preparedStatement.setLong(6, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Failed to update user: ", e);
@@ -160,6 +163,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             user.setLogin(resultSet.getString("login"));
             user.setPassword(resultSet.getString("password"));
             user.setToken(resultSet.getString("token"));
+            user.setSalt(resultSet.getBytes("salt"));
             Long roleId = resultSet.getLong("role_id");
             RoleDao roleDao = new RoleDaoJdbcImpl(connection);
             Optional<Role> role = roleDao.get(roleId);
