@@ -6,18 +6,22 @@ import java.sql.SQLException;
 import mate.academy.internetshop.dao.BucketDao;
 import mate.academy.internetshop.dao.ItemDao;
 import mate.academy.internetshop.dao.OrderDao;
+import mate.academy.internetshop.dao.RoleDao;
 import mate.academy.internetshop.dao.UserDao;
-import mate.academy.internetshop.dao.impl.BucketDaoImpl;
-import mate.academy.internetshop.dao.impl.OrderDaoImpl;
-import mate.academy.internetshop.dao.impl.UserDaoImpl;
+import mate.academy.internetshop.dao.jbbc.BucketDaoJdbcImpl;
 import mate.academy.internetshop.dao.jbbc.ItemDaoJdbcImpl;
+import mate.academy.internetshop.dao.jbbc.OrderDaoJdbcImpl;
+import mate.academy.internetshop.dao.jbbc.RoleDaoJdbcImpl;
+import mate.academy.internetshop.dao.jbbc.UserDaoJdbcImpl;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
 import mate.academy.internetshop.service.OrderService;
+import mate.academy.internetshop.service.RoleService;
 import mate.academy.internetshop.service.UserService;
 import mate.academy.internetshop.service.impl.BucketServiceImpl;
 import mate.academy.internetshop.service.impl.ItemServiceImpl;
 import mate.academy.internetshop.service.impl.OrderServiceImpl;
+import mate.academy.internetshop.service.impl.RoleServiceImpl;
 import mate.academy.internetshop.service.impl.UserServiceImpl;
 import org.apache.log4j.Logger;
 
@@ -40,10 +44,13 @@ public class Factory {
     private static BucketDao bucketDaoInstanse;
     private static OrderDao orderDaoInstanse;
     private static UserDao userDaoInstanse;
+    private static RoleDao roleDaoInstance;
+
     private static ItemService itemServiceInstanse;
     private static BucketService bucketServiceInstanse;
     private static OrderService orderServiceInstanse;
     private static UserService userServiceInstanse;
+    private static RoleService roleServiceInstanse;
 
     public static ItemService getItemService() {
         if (itemServiceInstanse == null) {
@@ -73,6 +80,13 @@ public class Factory {
         return userServiceInstanse;
     }
 
+    public static RoleService getRoleService() {
+        if (roleServiceInstanse == null) {
+            roleServiceInstanse = new RoleServiceImpl();
+        }
+        return roleServiceInstanse;
+    }
+
     public static ItemDao getItemDao() {
         if (itemDaoInstanse == null) {
             itemDaoInstanse = new ItemDaoJdbcImpl(connection);
@@ -82,22 +96,29 @@ public class Factory {
 
     public static BucketDao getBucketDao() {
         if (bucketDaoInstanse == null) {
-            bucketDaoInstanse = new BucketDaoImpl();
+            bucketDaoInstanse = new BucketDaoJdbcImpl(connection);
         }
         return bucketDaoInstanse;
     }
 
     public static OrderDao getOrderDao() {
         if (orderDaoInstanse == null) {
-            orderDaoInstanse = new OrderDaoImpl();
+            orderDaoInstanse = new OrderDaoJdbcImpl(connection);
         }
         return orderDaoInstanse;
     }
 
     public static UserDao getUserDao() {
         if (userDaoInstanse == null) {
-            userDaoInstanse = new UserDaoImpl();
+            userDaoInstanse = new UserDaoJdbcImpl(connection);
         }
         return userDaoInstanse;
+    }
+
+    public static RoleDao getRoleDao() {
+        if (roleDaoInstance == null) {
+            roleDaoInstance = new RoleDaoJdbcImpl(connection);
+        }
+        return roleDaoInstance;
     }
 }

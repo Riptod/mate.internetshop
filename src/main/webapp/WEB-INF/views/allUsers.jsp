@@ -9,7 +9,6 @@
 <body>
 Users:
 <table border="1">
-    <!-- here should go some titles... -->
     <tr>
         <th>ID</th>
         <th>Login</th>
@@ -17,19 +16,19 @@ Users:
         <th>Surname</th>
         <th>Delete</th>
     </tr>
-    <c:forEach var="item" items="${users}">
+    <c:forEach var="user" items ="${users}">
         <tr>
             <td>
-                <c:out value="${item.id}" />
+                <c:out value="${user.id}" />
             </td>
             <td>
-                <c:out value="${item.login}" />
+                <c:out value="${user.login}" />
             </td>
             <td>
-                <c:out value="${item.name}" />
+                <c:out value="${user.name}" />
             </td>
             <td>
-                <c:out value="${item.surname}" />
+                <c:out value="${user.surname}" />
             </td>
             <td>
                 <a href="/mate_internetshop_war_exploded/servlet/deleteUser?user_id=${item.id}">DELETE</a>

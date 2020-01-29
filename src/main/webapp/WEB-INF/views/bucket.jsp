@@ -9,12 +9,12 @@
 <body>
 Items:
 <table border="1">
-    <!-- here should go some titles... -->
     <tr>
         <th>Name</th>
         <th>Price</th>
         <th>Delete</th>
     </tr>
+    <c:if test="${not empty items}">
     <c:forEach var="item" items="${items}">
         <tr>
             <td>
@@ -28,8 +28,9 @@ Items:
             </td>
         </tr>
     </c:forEach>
+    </c:if>
 </table>
-<a href="/mate_internetshop_war_exploded/servlet/getAllItems">AllItems</a>
+<a href="/mate_internetshop_war_exploded/getAllItems">AllItems</a>
 <a href="/mate_internetshop_war_exploded/servlet/compliteOrder">CompliteOrder</a>
 <a href="/mate_internetshop_war_exploded/servlet/home">Back to home</a>
 </body>

@@ -10,9 +10,7 @@ public class Bucket {
     private List<Item> items;
 
     public Bucket() {
-        this.id = IdGenerator.getBucketId();
         items = new ArrayList<>();
-
     }
 
     public Long getId() {

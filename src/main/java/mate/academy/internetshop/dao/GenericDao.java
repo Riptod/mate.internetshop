@@ -1,16 +1,14 @@
 package mate.academy.internetshop.dao;
 
-import java.util.List;
 import java.util.Optional;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 
 public interface GenericDao<T, I> {
-    T create(T object);
+    T create(T object) throws DataProcessingException;
 
-    Optional<T> get(I id);
+    Optional<T> get(I id) throws DataProcessingException;
 
-    T update(T object);
+    T update(T object) throws DataProcessingException;
 
-    boolean delete(I id);
-
-    List<T> getAll();
+    boolean delete(I id) throws DataProcessingException;
 }

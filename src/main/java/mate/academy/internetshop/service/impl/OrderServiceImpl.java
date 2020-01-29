@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.dao.UserDao;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
 import mate.academy.internetshop.models.Item;
@@ -27,14 +28,14 @@ public class OrderServiceImpl implements OrderService {
     private static UserDao userDao;
 
     @Override
-    public Order completeOrder(List<Item> items, User user) {
+    public Order completeOrder(List<Item> items, User user) throws DataProcessingException {
         Order order = new Order(items, user.getId());
         bucketService.clear(bucketService.getByUser(user.getId()).getId());
-        return create(order);
+        return orderDao.create(order);
     }
 
     @Override
-    public List getUserOrders(User user) {
+    public List getUserOrders(User user) throws DataProcessingException {
         List<Order> userOrders = new ArrayList<>();
         for (Order order : orderDao.getAll()) {
             if (order.getUserId().equals(user.getId())) {
@@ -45,28 +46,35 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order create(Order order) {
+    public Order create(Order order) throws DataProcessingException {
         return orderDao.create(order);
     }
 
     @Override
-    public Order get(Long id) {
+    public Order get(Long id) throws DataProcessingException {
         return orderDao.get(id)
                 .orElseThrow(() -> new NoSuchElementException("Found no order with id " + id));
     }
 
     @Override
-    public Order update(Order order) {
+    public Order update(Order order) throws DataProcessingException {
         return orderDao.update(order);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(Long id) throws DataProcessingException {
         return orderDao.delete(id);
     }
 
     @Override
-    public List<Order> getAll() {
+    public List<Order> getAll() throws DataProcessingException {
         return orderDao.getAll();
     }
+
+    @Override
+    public List<Order> getOrders(Long userId) throws DataProcessingException {
+        return orderDao.getOrders(userId);
+    }
+
+
 }

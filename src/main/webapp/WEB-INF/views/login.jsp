@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: super
-  Date: 15.01.2020
-  Time: 13:32
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,7 +5,6 @@
 </head>
 <body>
 Hello login page
-
 <form action="/mate_internetshop_war_exploded/login" method="post" id="form">
     <div class="container">
         <h1>Login</h1>

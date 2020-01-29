@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: super
-  Date: 12.01.2020
-  Time: 16:08
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,7 +5,6 @@
 </head>
 <body>
 Create new item!
-
 <form action="/mate_internetshop_war_exploded/servlet/createItem" method="post">
     <div class="container">
         <h1>CreateItem</h1>

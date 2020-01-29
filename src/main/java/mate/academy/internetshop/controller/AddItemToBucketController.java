@@ -5,11 +5,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.ItemService;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class AddItemToBucketController extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(AddItemToBucketController.class);
+
     @Inject
     private static BucketService bucketService;
     @Inject
@@ -20,8 +26,14 @@ public class AddItemToBucketController extends HttpServlet {
             throws ServletException, IOException {
         Long userId = (Long) req.getSession().getAttribute("userId");
         String itemId = req.getParameter("item_id");
-        bucketService.addItem(bucketService.getByUser(userId), itemService
-                .get(Long.valueOf(itemId)));
-        resp.sendRedirect(req.getContextPath() + "/servlet/getAllItems");
+        try {
+            bucketService.addItem(bucketService.getByUser(userId), itemService
+                    .get(Long.valueOf(itemId)));
+        } catch (DataProcessingException e) {
+            LOGGER.error("Can't add item", e);
+            req.setAttribute("errorMsg", "Can't add item");
+            req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
+        }
+        resp.sendRedirect(req.getContextPath() + "/getAllItems");
     }
 }

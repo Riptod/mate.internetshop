@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.database.Storage;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.models.User;
 
@@ -56,10 +57,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
-        return Storage.users.stream()
-                .filter(u -> u.getLogin().equals(login))
-                .findFirst();
+    public Optional<User> login(String login) throws DataProcessingException {
+        return Optional.empty();
     }
 
     @Override

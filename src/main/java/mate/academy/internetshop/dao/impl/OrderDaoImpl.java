@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import mate.academy.internetshop.dao.OrderDao;
 import mate.academy.internetshop.database.Storage;
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.models.Order;
 
@@ -51,6 +52,16 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> getAll() {
         return Storage.orders;
+    }
+
+    @Override
+    public Order addItem(Long orderId, Long itemId) throws DataProcessingException {
+        return null;
+    }
+
+    @Override
+    public List<Order> getOrders(Long userId) throws DataProcessingException {
+        return null;
     }
 
 }

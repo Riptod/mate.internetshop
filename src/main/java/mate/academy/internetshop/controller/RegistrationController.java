@@ -8,14 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import mate.academy.internetshop.exceptions.DataProcessingException;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.models.Bucket;
 import mate.academy.internetshop.models.Role;
 import mate.academy.internetshop.models.User;
 import mate.academy.internetshop.service.BucketService;
 import mate.academy.internetshop.service.UserService;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class RegistrationController extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(RegistrationController.class);
+
     @Inject
     private static UserService userService;
     @Inject
@@ -31,19 +36,29 @@ public class RegistrationController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         User newUser = new User();
-        Bucket newBucket = new Bucket();
-        newBucket.setUserId(newUser.getId());
         newUser.setLogin(req.getParameter("login"));
         newUser.setPassword(req.getParameter("psw"));
         newUser.setName(req.getParameter("user_name"));
         newUser.setSurname(req.getParameter("user_surname"));
-        newUser.addRole(Role.of("USER"));
-        User user = userService.create(newUser);
-        HttpSession session = req.getSession(true);
-        session.setAttribute("userId", user.getId());
-        Cookie cookie = new Cookie("MATE", user.getToken());
-        resp.addCookie(cookie);
-        bucketService.create(newBucket);
+        Role role = new Role();
+        role.setId(1L);
+        role.setRoleName("USER");
+        newUser.addRole(role);
+        try {
+            User user = userService.create(newUser);
+            Bucket newBucket = new Bucket();
+            newBucket.setUserId(user.getId());
+            bucketService.create(newBucket);
+            HttpSession session = req.getSession(true);
+            session.setAttribute("userId", user.getId());
+            newBucket.setUserId(newUser.getId());
+            Cookie cookie = new Cookie("MATE", user.getToken());
+            resp.addCookie(cookie);
+        } catch (DataProcessingException e) {
+            LOGGER.error("Can't registrate user", e);
+            req.setAttribute("errorMsg", "Can't registrate");
+            req.getRequestDispatcher("/WEB-INF/views/errorDb.jsp").forward(req, resp);
+        }
         resp.sendRedirect(req.getContextPath() + "/servlet/home");
     }
 }
