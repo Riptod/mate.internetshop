@@ -1,0 +1,135 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: aliceblue;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Add padding to containers */
+.container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.table-item {
+    text-align: center;
+    border-collapse: collapse;
+    width: 450px;
+}
+
+.form-wrap {
+    width: 250px;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 6px;
+    margin: 11px 0 22px 0;
+    display: inline-block;
+    border: none;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+    text-transform: lowercase;
+}
+
+.button-wrap {
+    display: flex;
+    justify-content: space-around;
+    width: 450px;
+    margin-top: 15px;
+}
+
+h2 {
+    text-align: center;
+}
+
+/* Overwrite default styles of hr */
+hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 15px;
+}
+
+/* Set a style for the submit button */
+.registerbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 11px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    min-width: 120px;
+    opacity: 0.9;
+    font-weight: 700;
+}
+
+.registerbtn:hover {
+    opacity: 1;
+}
+
+table,
+td {
+    border: 1px solid;
+}
+
+.text {
+    font-size: 14px;
+}
+
+.menu_text {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.text a {
+    font-style: italic;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+
+tr:nth-child(odd) {
+    background-color: lightgray;
+}
+
+tr:first-child {
+    background-color: gray;
+    border: 1px solid black;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+}
+
+.home_button {
+    margin-right: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 11px 20px;
+    border: none;
+    cursor: pointer;
+    min-width: 120px;
+    opacity: 0.9;
+    font-weight: 700;
+}
+
+.add-link {
+    font-style: italic;
+    text-decoration: underline;
+    color: #0276aa;
+}
