@@ -77,12 +77,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>compliteOrder</servlet-name>
+        <servlet-name>completeOrder</servlet-name>
         <servlet-class>mate.academy.internetshop.controller.CompliteOrderController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>compliteOrder</servlet-name>
-        <url-pattern>/servlet/compliteOrder</url-pattern>
+        <servlet-name>completeOrder</servlet-name>
+        <url-pattern>/servlet/completeOrder</url-pattern>
     </servlet-mapping>
 
     <servlet>

@@ -11,7 +11,7 @@ public interface UserDao extends GenericDao<User, Long> {
 
     Optional<User> getByToken(String token) throws DataProcessingException;
 
-    public List<User> getAll() throws DataProcessingException;
+    List<User> getAll() throws DataProcessingException;
 
-    public Optional<User> login(String login) throws DataProcessingException;
+    Optional<User> login(String login) throws DataProcessingException;
 }

@@ -7,9 +7,9 @@
 * [Authors](#authors)
 
 ## <a name="description"></a>Project description
-A web application where a user can go to a store, view available products, add products to the bucket, create orders with selected products, and view their orders.
+A web application where a user can go to a store, view available products, add products to the bucket, create orders with selected products, and view their orders. There is also a registration and user login
 
-The administrator can manage the user list and product list.
+The administrator can manage the user list, product list and delete orders.
 
 ## <a name="structure"></a>Project Structure
 * Java 11

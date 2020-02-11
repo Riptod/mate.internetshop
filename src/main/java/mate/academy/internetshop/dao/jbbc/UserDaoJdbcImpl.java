@@ -50,7 +50,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
         try (PreparedStatement preparedStatement
                      = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 long userId = resultSet.getLong("user_id");
                 String name = resultSet.getString("name");
                 String surname = resultSet.getString("surname");
@@ -94,7 +94,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
             preparedStatement.setBytes(6, user.getSalt());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            while (generatedKeys.next()) {
+            if (generatedKeys.next()) {
                 user.setId(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
@@ -156,7 +156,7 @@ public class UserDaoJdbcImpl extends AbstractDao<User> implements UserDao {
     private User setUser(ResultSet resultSet) throws SQLException,
             DataProcessingException {
         User user = new User();
-        while (resultSet.next()) {
+        if (resultSet.next()) {
             user.setId(resultSet.getLong("user_id"));
             user.setName(resultSet.getString("name"));
             user.setSurname(resultSet.getString("surname"));

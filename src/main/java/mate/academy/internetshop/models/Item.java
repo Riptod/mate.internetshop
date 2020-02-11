@@ -1,20 +1,16 @@
 package mate.academy.internetshop.models;
 
-import mate.academy.internetshop.idgenerator.IdGenerator;
-
 public class Item {
     private Long id;
     private String name;
     private Double price;
 
     public Item(String name, Double price) {
-        this.id = IdGenerator.getItemId();
         this.name = name;
         this.price = price;
     }
 
     public Item() {
-        this.id = IdGenerator.getItemId();
     }
 
     public Long getId() {

@@ -2,7 +2,6 @@ package mate.academy.internetshop.models;
 
 import java.util.HashSet;
 import java.util.Set;
-import mate.academy.internetshop.idgenerator.IdGenerator;
 
 public class User {
     private Long id;
@@ -35,7 +34,6 @@ public class User {
     }
 
     public User() {
-        this.id = IdGenerator.getUserId();
     }
 
     public Long getId() {

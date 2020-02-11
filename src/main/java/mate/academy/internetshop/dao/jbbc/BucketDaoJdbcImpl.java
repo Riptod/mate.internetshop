@@ -32,7 +32,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
                      = connection.prepareStatement(query)) {
             stmt.setLong(1, userId);
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 long bucketIdFromDb = rs.getLong("bucket_id");
                 long userIdFromDb = rs.getLong("user_id");
                 bucket.setId(bucketIdFromDb);
@@ -46,7 +46,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
                      = connection.prepareStatement(queryItems)) {
             stmt.setLong(1, bucket.getId());
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 long itemId = rs.getLong("item_id");
                 Optional<Item> item = itemDao.get(itemId);
                 bucket.getItems().add(item.get());
@@ -90,7 +90,7 @@ public class BucketDaoJdbcImpl extends AbstractDao<Bucket> implements BucketDao 
                      = connection.prepareStatement(query)) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 long bucketId = rs.getLong("bucket_id");
                 long userId = rs.getLong("user_id");
                 long itemId = rs.getLong("item_id");
