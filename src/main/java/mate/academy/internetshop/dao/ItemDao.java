@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ItemDao extends GenericDao<Item, Long> {
 
-    public List<Item> getAll() throws DataProcessingException;
+    List<Item> getAll() throws DataProcessingException;
 }

@@ -56,7 +56,7 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 long orderId = rs.getLong("order_id");
                 long userId = rs.getLong("user_id");
                 long itemId = rs.getLong("item_id");
@@ -112,7 +112,7 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
         try (PreparedStatement stmt
                      = connection.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 long orderId = rs.getLong("order_id");
                 Order order = get(orderId).get();
                 orders.add(order);
@@ -145,7 +145,7 @@ public class OrderDaoJdbcImpl extends AbstractDao<Order> implements OrderDao {
                      = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 long orderId = resultSet.getLong("order_id");
                 Optional<Order> order = get(orderId);
                 orders.add(order.get());

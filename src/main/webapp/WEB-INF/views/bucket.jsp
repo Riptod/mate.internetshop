@@ -39,10 +39,10 @@
 
     <div class="button-wrap">
         <a href="/mate_internetshop_war_exploded/getAllItems">
-            <button type="submit" class="registerbtn">Complete Order</button>
+            <button type="submit" class="registerbtn">Back to items</button>
         </a>
-        <a href="/mate_internetshop_war_exploded/servlet/compliteOrder">
-            <button type="submit" class="registerbtn">CompliteOrder</button>
+        <a href="/mate_internetshop_war_exploded/servlet/completeOrder">
+            <button type="submit" class="registerbtn">Complete Order</button>
         </a>
         <a href="/mate_internetshop_war_exploded/servlet/home">
             <button type="submit" class="registerbtn">Back to home</button>

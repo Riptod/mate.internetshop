@@ -46,7 +46,7 @@ public class RoleDaoJdbcImpl extends AbstractDao<Role> implements RoleDao {
                      = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 Long roleId = resultSet.getLong("roles_id");
                 String name = resultSet.getString("role");
                 role.setId(roleId);

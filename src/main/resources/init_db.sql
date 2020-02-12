@@ -1,101 +1,100 @@
-CREATE SCHEMA `internetshop` DEFAULT CHARACTER SET utf8 ;
+CREATE TABLE `users`
+(
+    `user_id`  int            NOT NULL AUTO_INCREMENT,
+    `name`     varchar(45)  DEFAULT NULL,
+    `surname`  varchar(45)  DEFAULT NULL,
+    `login`    varchar(45)    NOT NULL,
+    `password` varchar(255)   NOT NULL,
+    `token`    varchar(255) DEFAULT NULL,
+    `salt`     varbinary(255) NOT NULL,
+    PRIMARY KEY (`user_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 24
+  DEFAULT CHARSET = utf8;
 
-CREATE TABLE `internetshop`.`items` (
-  `item_id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `price` DECIMAL(6,2) NOT NULL,
-  PRIMARY KEY (`item_id`));
+CREATE TABLE `roles`
+(
+    `roles_id` int         NOT NULL AUTO_INCREMENT,
+    `role`     varchar(45) NOT NULL,
+    PRIMARY KEY (`roles_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 3
+  DEFAULT CHARSET = utf8;
 
-INSERT INTO `internetshop`.`items` (`name`, `price`) VALUES ('M416', '1250');
+CREATE TABLE `users_roles`
+(
+    `user_roles_id` int NOT NULL AUTO_INCREMENT,
+    `role_id`       int NOT NULL,
+    `user_id`       int NOT NULL,
+    PRIMARY KEY (`user_roles_id`),
+    KEY `user_roles_user_fk_idx` (`user_id`),
+    KEY `user_roles_roles_fk_idx` (`role_id`),
+    CONSTRAINT `user_roles_roles_fk` FOREIGN KEY (`role_id`) REFERENCES `roles` (`roles_id`),
+    CONSTRAINT `user_roles_user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 18
+  DEFAULT CHARSET = utf8;
 
-SELECT * FROM internetshop.items WHERE item_id=1;
+CREATE TABLE `bucket`
+(
+    `bucket_id` int NOT NULL AUTO_INCREMENT,
+    `user_id`   int NOT NULL,
+    PRIMARY KEY (`bucket_id`),
+    KEY `bucket_user_fk_idx` (`user_id`),
+    CONSTRAINT `bucket_user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 3
+  DEFAULT CHARSET = utf8;
 
-CREATE TABLE `internetshop`.`orders` (
-    `order_id` INT NOT NULL AUTO_INCREMENT,
-     PRIMARY KEY (`order_id`));
+CREATE TABLE `items`
+(
+    `item_id` int           NOT NULL AUTO_INCREMENT,
+    `name`    varchar(255)  NOT NULL,
+    `price`   decimal(6, 2) NOT NULL,
+    PRIMARY KEY (`item_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 4
+  DEFAULT CHARSET = utf8;
 
-CREATE TABLE `internetshop`.`orders_items` (
-                                               `orders_items_id` INT NOT NULL AUTO_INCREMENT,
-                                               `order_id` INT NOT NULL,
-                                               `item_id` INT NOT NULL,
-                                               PRIMARY KEY (`orders_items_id`),
-                                               INDEX `orders_items_orders_fk_idx` (`order_id` ASC) VISIBLE,
-                                               INDEX `orders_items_items_fk_idx` (`item_id` ASC) VISIBLE,
-                                               CONSTRAINT `orders_items_orders_fk`
-                                                   FOREIGN KEY (`order_id`)
-                                                       REFERENCES `internetshop`.`orders` (`order_id`)
-                                                       ON DELETE NO ACTION
-                                                       ON UPDATE NO ACTION,
-                                               CONSTRAINT `orders_items_items_fk`
-                                                   FOREIGN KEY (`item_id`)
-                                                       REFERENCES `internetshop`.`items` (`item_id`)
-                                                       ON DELETE NO ACTION
-                                                       ON UPDATE NO ACTION);
-
-CREATE TABLE `internetshop`.`users` (
-                                        `user_id` INT NOT NULL AUTO_INCREMENT,
-                                        `name` VARCHAR(45) NULL,
-                                        `surname` VARCHAR(45) NULL,
-                                        `login` VARCHAR(45) NOT NULL,
-                                        `password` VARCHAR(45) NOT NULL,
-                                        `token` VARCHAR(45) NULL,
-                                        PRIMARY KEY (`user_id`));
-
-ALTER TABLE `internetshop`.`orders`
-    ADD COLUMN `user_id` INT NOT NULL AFTER `order_id`,
-    ADD INDEX `orders_users_fk_idx` (`user_id` ASC) VISIBLE;
-;
-ALTER TABLE `internetshop`.`orders`
-    ADD CONSTRAINT `orders_users_fk`
-        FOREIGN KEY (`user_id`)
-            REFERENCES `internetshop`.`users` (`user_id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION;
-
-CREATE TABLE `internetshop`.`roles` (
-                                        `roles_id` INT NOT NULL AUTO_INCREMENT,
-                                        `role` VARCHAR(45) NOT NULL,
-                                        PRIMARY KEY (`roles_id`));
+CREATE TABLE `bucket_items`
+(
+    `bucket_items_id` int NOT NULL AUTO_INCREMENT,
+    `bucket_id`       int NOT NULL,
+    `item_id`         int NOT NULL,
+    PRIMARY KEY (`bucket_items_id`),
+    KEY `bucket_items_bucket_fk_idx` (`bucket_id`),
+    KEY `bucket_items_itemst_fk_idx` (`item_id`),
+    CONSTRAINT `bucket_items_bucket_fk` FOREIGN KEY (`bucket_id`) REFERENCES `bucket` (`bucket_id`),
+    CONSTRAINT `bucket_items_itemst_fk` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 44
+  DEFAULT CHARSET = utf8;
 
 
-CREATE TABLE `internetshop`.`user_roles` (
-                                             `user_roles_id` INT NOT NULL AUTO_INCREMENT,
-                                             `role_id` INT NOT NULL,
-                                             `user_id` INT NOT NULL,
-                                             PRIMARY KEY (`user_roles_id`),
-                                             INDEX `user_roles_user_fk_idx` (`user_id` ASC) VISIBLE,
-                                             INDEX `user_roles_roles_fk_idx` (`role_id` ASC) VISIBLE,
-                                             CONSTRAINT `user_roles_user_fk`
-                                                 FOREIGN KEY (`user_id`)
-                                                     REFERENCES `internetshop`.`users` (`user_id`)
-                                                     ON DELETE NO ACTION
-                                                     ON UPDATE NO ACTION,
-                                             CONSTRAINT `user_roles_roles_fk`
-                                                 FOREIGN KEY (`role_id`)
-                                                     REFERENCES `internetshop`.`roles` (`roles_id`)
-                                                     ON DELETE NO ACTION
-                                                     ON UPDATE NO ACTION);
+CREATE TABLE `orders`
+(
+    `order_id` int NOT NULL AUTO_INCREMENT,
+    `user_id`  int NOT NULL,
+    PRIMARY KEY (`order_id`),
+    KEY `orders_users_fk_idx` (`user_id`),
+    CONSTRAINT `orders_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 7
+  DEFAULT CHARSET = utf8;
 
-CREATE TABLE `internetshop`.`bucket` (
-                                         `bucket_id` INT NOT NULL AUTO_INCREMENT,
-                                         `user_id` INT NOT NULL,
-                                         PRIMARY KEY (`bucket_id`));
+CREATE TABLE `orders_items`
+(
+    `orders_items_id` int NOT NULL AUTO_INCREMENT,
+    `order_id`        int NOT NULL,
+    `item_id`         int NOT NULL,
+    PRIMARY KEY (`orders_items_id`),
+    KEY `orders_items_orders_fk_idx` (`order_id`),
+    KEY `orders_items_items_fk_idx` (`item_id`),
+    CONSTRAINT `orders_items_items_fk` FOREIGN KEY (`item_id`) REFERENCES `items` (`item_id`),
+    CONSTRAINT `orders_items_orders_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 12
+  DEFAULT CHARSET = utf8;
 
-CREATE TABLE `internetshop`.`bucket_items` (
-                                               `bucket_items_id` INT NOT NULL AUTO_INCREMENT,
-                                               `bucket_id` INT NOT NULL,
-                                               `item_id` INT NOT NULL,
-                                               PRIMARY KEY (`bucket_items_id`),
-                                               INDEX `bucket_items_bucket_fk_idx` (`bucket_id` ASC) VISIBLE,
-                                               INDEX `bucket_items_itemst_fk_idx` (`item_id` ASC) VISIBLE,
-                                               CONSTRAINT `bucket_items_bucket_fk`
-                                                   FOREIGN KEY (`bucket_id`)
-                                                       REFERENCES `internetshop`.`bucket` (`bucket_id`)
-                                                       ON DELETE NO ACTION
-                                                       ON UPDATE NO ACTION,
-                                               CONSTRAINT `bucket_items_itemst_fk`
-                                                   FOREIGN KEY (`item_id`)
-                                                       REFERENCES `internetshop`.`items` (`item_id`)
-                                                       ON DELETE NO ACTION
-                                                       ON UPDATE NO ACTION);
-
+INSERT INTO `items` (`name`, `price`) VALUES ('Samsung', '900');
+INSERT INTO `items` (`name`, `price`) VALUES ('Xiaomi', '1200');

@@ -7,16 +7,16 @@
     </style>
 </head>
 <body>
-<form action="/mate_internetshop_war_exploded/login" method="post" id="form">
+<form action="/mate_internetshop_war_exploded/login" method="post">
     <div class="container">
         <h2>Login</h2>
         <p class="text">Please fill in this form to login an account.</p>
         <div class="form-wrap">
             <label for="login"><b>Login</b></label>
-            <input type="text" placeholder="Enter login" id="login" required>
+            <input type="text" placeholder="Enter login" name="login" required>
 
             <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" id="psw" required>
+            <input type="password" placeholder="Enter Password" name="psw" required>
             <button type="submit" class="registerbtn">Login</button>
         </div>
         <div>${errorMsg}</div>

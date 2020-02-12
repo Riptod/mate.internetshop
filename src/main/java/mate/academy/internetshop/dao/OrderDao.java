@@ -6,9 +6,9 @@ import mate.academy.internetshop.models.Order;
 
 public interface OrderDao extends GenericDao<Order, Long> {
 
-    public List<Order> getAll() throws DataProcessingException;
+    List<Order> getAll() throws DataProcessingException;
 
-    public Order addItem(Long orderId, Long itemId) throws DataProcessingException;
+    Order addItem(Long orderId, Long itemId) throws DataProcessingException;
 
     List<Order> getOrders(Long userId) throws DataProcessingException;
 }

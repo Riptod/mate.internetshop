@@ -2,7 +2,6 @@ package mate.academy.internetshop.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import mate.academy.internetshop.idgenerator.IdGenerator;
 
 public class Bucket {
     private Long id;

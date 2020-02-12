@@ -38,7 +38,7 @@ public class AuthorizationFilter implements Filter {
         protectedUrls.put("/servlet/addItemToBucket", "USER");
         protectedUrls.put("/servlet/bucket", "USER");
         protectedUrls.put("/servlet/deleteItemFromBucket", "USER");
-        protectedUrls.put("/servlet/compliteOrder", "USER");
+        protectedUrls.put("/servlet/completeOrder", "USER");
         protectedUrls.put("/servlet/getAllOrders", "USER");
     }
 

@@ -12,6 +12,6 @@ public interface UserService  extends GenericService<User, Long> {
 
     Optional<User> getByToken(String token) throws DataProcessingException;
 
-    public List<User> getAll() throws DataProcessingException;
+    List<User> getAll() throws DataProcessingException;
 
 }
